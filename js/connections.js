@@ -9,9 +9,11 @@ var stars;
 var delay = true;
 var counter = 0;
 
-var MAX_DISTANCE = 75;
-var SPEED = 1;
-var DENSITY = .15;
+var MAX_DISTANCE = 100;
+var SPEED = 0.8;
+var DENSITY = .1;
+var SMALLEST_SIZE = 4;
+var LARGEST_SIZE = 8;
 
 setInterval(function () {
   ++counter;
@@ -62,7 +64,7 @@ function draw() {
       if(j===i) continue;
       var dis = getDistance(pxs[i], pxs[j]);
       if(dis <= MAX_DISTANCE)
-        connect(pxs[i], pxs[j], dis/MAX_DISTANCE);
+        connect(pxs[i], pxs[j], 1-dis/MAX_DISTANCE);
     }
   }
   window.requestAnimationFrame(draw);
@@ -75,7 +77,7 @@ function Body() {
     
   	x = (WIDTH*Math.random());
   	y = (HEIGHT*Math.random());
-  	r = getRandomIn(3, 5);
+  	r = getRandomIn(SMALLEST_SIZE, LARGEST_SIZE);
   	planet = false;
   	dx = (Math.random() > 0.5 ? -1 : 1) * Math.random() * SPEED;
   	dy = (Math.random() > 0.5 ? -1 : 1) * Math.random() * SPEED;
@@ -110,9 +112,9 @@ function Body() {
     if(r <= 0 || r > 30)
       opacity-=0.025;
     if(x > WIDTH || x < 0 || opacity <= 0 || r <= 0)
-      this.reset();
+      dx*=-1;
     if(y > HEIGHT || y < 0)
-      this.reset();
+      dy*=-1;
   };
   
   this.getX = function() { return x; }
@@ -137,12 +139,17 @@ var connect = function(bug1, bug2, opacity){
   
   con.beginPath();
   
-  con.lineWidth = 0.5;
-  con.strokeStyle = 'rgba(0,255,255' + opacity + ')';
+  con.lineWidth = 1;
+  con.strokeStyle = 'rgba(255,255,255,' + opacity + ')';
   //con.shadowColor   = 'rgba(226,225,142,1)';
+ // con.globalAlpha=opacity; // Half opacity
   con.moveTo(bug1.getX() - bug1.getR(), bug1.getY() - bug1.getR());
   con.lineTo(bug2.getX() - bug2.getR(), bug2.getY() - bug2.getR());
   con.stroke();
   
   con.closePath();
+  // con.shadowOffsetX = 0;
+  // con.shadowOffsetY = 0;
+  // con.shadowBlur    = 10;
+  // con.fill();
 };
