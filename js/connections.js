@@ -32,7 +32,7 @@ $(document).ready(function(){
   bang(); // creating life
 
   $( window ).resize(function() {
-    WIDTH = $('#area').width();
+    WIDTH = $('#space').width();
     $(canvas).attr('width', WIDTH).attr('height',WIDTH);
     stars = WIDTH * DENSITY;
   });
@@ -41,10 +41,10 @@ $(document).ready(function(){
 });
 
 function bang() {
-  WIDTH = $('#area').width();
-  HEIGHT = $('#area').height();
+  WIDTH = $('#space').width();
+  HEIGHT = $('#space').height();
   
-  canvas = document.getElementById('space');
+  canvas = document.getElementById('space-content');
   $(canvas).attr('width', WIDTH).attr('height',HEIGHT);
   
   con = canvas.getContext('2d');
